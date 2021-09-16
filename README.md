@@ -1,6 +1,8 @@
 <img src="https://user-images.githubusercontent.com/16062886/117444014-2d1ffd80-af39-11eb-9bbb-33c320599d93.png" width="100%" alt="React Native Gesture Handler by Software Mansion">
 
+
 ### Declarative API exposing platform native touch and gesture system to React Native.
+#### (with a hack from to animate/add drag to release gesture for swipeable)
 
 React Native Gesture Handler provides native-driven gesture management APIs for building best possible touch-based experiences in React Native.
 

@@ -243,10 +243,8 @@ export default class Swipeable extends Component<
     const { rightOffset = rowWidth } = state;
     const rightWidth = Math.max(0, rowWidth - rightOffset);
 
-    const {
-      overshootLeft = leftWidth > 0,
-      overshootRight = rightWidth > 0,
-    } = props;
+    const { overshootLeft = leftWidth > 0, overshootRight = rightWidth > 0 } =
+      props;
 
     const transX = Animated.add(
       rowTranslation,
@@ -412,7 +410,9 @@ export default class Swipeable extends Component<
   };
 
   close = () => {
-    this.animateRow(this.currentOffset(), 0);
+    if (JSON.stringify(this.rightActionTranslate) !== '0') {
+      this.animateRow(50, 0);
+    } else this.animateRow(-50, 0);
   };
 
   openLeft = () => {
@@ -439,7 +439,8 @@ export default class Swipeable extends Component<
           // asigned in constructor in `updateAnimatedEvent` but TS cannot spot
           // it for some reason
           { transform: [{ translateX: this.leftActionTranslate! }] },
-        ]}>
+        ]}
+      >
         {renderLeftActions(this.showLeftAction!, this.transX!)}
         <View
           onLayout={({ nativeEvent }) =>
@@ -454,7 +455,8 @@ export default class Swipeable extends Component<
         style={[
           styles.rightActions,
           { transform: [{ translateX: this.rightActionTranslate! }] },
-        ]}>
+        ]}
+      >
         {renderRightActions(this.showRightAction!, this.transX!)}
         <View
           onLayout={({ nativeEvent }) =>
@@ -469,15 +471,18 @@ export default class Swipeable extends Component<
         activeOffsetX={[-10, 10]}
         {...this.props}
         onGestureEvent={this.onGestureEvent}
-        onHandlerStateChange={this.onHandlerStateChange}>
+        onHandlerStateChange={this.onHandlerStateChange}
+      >
         <Animated.View
           onLayout={this.onRowLayout}
-          style={[styles.container, this.props.containerStyle]}>
+          style={[styles.container, this.props.containerStyle]}
+        >
           {left}
           {right}
           <TapGestureHandler
             enabled={rowState !== 0}
-            onHandlerStateChange={this.onTapHandlerStateChange}>
+            onHandlerStateChange={this.onTapHandlerStateChange}
+          >
             <Animated.View
               pointerEvents={rowState === 0 ? 'auto' : 'box-only'}
               style={[
@@ -485,7 +490,8 @@ export default class Swipeable extends Component<
                   transform: [{ translateX: this.transX! }],
                 },
                 this.props.childrenContainerStyle,
-              ]}>
+              ]}
+            >
               {children}
             </Animated.View>
           </TapGestureHandler>
